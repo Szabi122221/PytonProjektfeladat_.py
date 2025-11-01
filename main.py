@@ -72,7 +72,8 @@ class Applikacio:
         self.current_csv_file = None
 
     def betolt_alap_adatok(self):
-        self.dolgozok_lista = [
+        self.dolgozok_lista = \
+        [
             Dolgozo_KSZ_Osztaly("Nagy János", 45),
             Dolgozo_KSZ_Osztaly("Kiss Mária", 28),
             Dolgozo_KSZ_Osztaly("Tóth Béla", 51),
@@ -103,10 +104,11 @@ class Applikacio:
         torolt_dolgozo = self.dolgozok_lista[index]
 
         # Confirm deletion
-        valasz = messagebox.askyesno(
+        valasz = (messagebox.askyesno
+        (
             "Törlés megerősítése",
             f"Biztosan törli: {torolt_dolgozo.nev} ({torolt_dolgozo.kor} év)?"
-        )
+        ))
 
         if valasz:
             del self.dolgozok_lista[index]
@@ -139,10 +141,11 @@ class Applikacio:
             messagebox.showerror("Hiba", "A kornak számnak kell lennie!")
 
     def betolt_csv(self):
-        fajlnev = filedialog.askopenfilename(
+        fajlnev = (filedialog.askopenfilename
+        (
             title="CSV fájl megnyitása",
             filetypes=(("CSV fájlok", "*.csv"), ("Minden fájl", "*.*"))
-        )
+        ))
         if not fajlnev:
             return
 
@@ -182,11 +185,12 @@ class Applikacio:
         messagebox.showerror("Hiba", "Nem sikerült beolvasni a fájlt. Próbálja meg UTF-8 kódolással menteni!")
 
     def ment_csv(self):
-        fajlnev = filedialog.asksaveasfilename(
+        fajlnev = (filedialog.asksaveasfilename
+        (
             title="CSV fájl mentése",
             defaultextension=".csv",
             filetypes=(("CSV fájlok", "*.csv"), ("Minden fájl", "*.*"))
-        )
+        ))
 
         if not fajlnev:
             return

@@ -7,6 +7,7 @@ class Dolgozo_KSZ_Osztaly:
         return f"{self.nev} ({self.kor} év)"
 
 
+
 def rendezes_ksz_fv(dolgozok, kulcs):
     if kulcs == 'nev':
         return sorted(dolgozok, key=lambda d: d.nev)

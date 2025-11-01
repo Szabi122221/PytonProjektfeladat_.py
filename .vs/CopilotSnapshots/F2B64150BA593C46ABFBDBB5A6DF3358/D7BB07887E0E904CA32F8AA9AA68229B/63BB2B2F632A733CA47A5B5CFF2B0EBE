@@ -1,0 +1,114 @@
+﻿import tkinter as tk
+from tkinter import ttk
+from tkinter import filedialog
+import csv
+from LogikaKSZ import Dolgozo_KSZ_Osztaly, rendezes_ksz_fv
+
+
+class Applikacio:
+    def __init__(self, root_ablak):
+        self.app = root_ablak
+        self.app.title("KSZ Projekt - Adatrendező")
+        self.app.geometry("400x400")
+
+        self.dolgozok_lista = []
+
+        self.frame = ttk.Frame(self.app, padding="10")
+        self.frame.pack(fill=tk.BOTH, expand=True)
+
+        self.lista_cim = ttk.Label(self.frame, text="Dolgozók:")
+        self.lista_cim.pack()
+
+        self.listbox = tk.Listbox(self.frame, height=10)
+        self.listbox.pack(fill=tk.X, expand=True, pady=5)
+
+        self.btn_frame = ttk.Frame(self.frame)
+        self.btn_frame.pack(fill=tk.X)
+
+        self.btn_rendez_nev = ttk.Button(self.btn_frame, text="Rendezés (Név)", command=self.rendez_nev)
+        self.btn_rendez_nev.pack(side=tk.LEFT, expand=True, fill=tk.X, padx=2)
+
+        self.btn_rendez_kor = ttk.Button(self.btn_frame, text="Rendezés (Kor)", command=self.rendez_kor)
+        self.btn_rendez_kor.pack(side=tk.LEFT, expand=True, fill=tk.X, padx=2)
+
+        self.menu = tk.Menu(self.app)
+        self.app.config(menu=self.menu)
+        self.file_menu = tk.Menu(self.menu, tearoff=0)
+
+        self.menu.add_cascade(label="Fájl", menu=self.file_menu)
+        self.file_menu.add_command(label="Adatok betöltése (CSV)", command=self.betolt_csv)
+        self.file_menu.add_separator()
+        self.file_menu.add_command(label="Kilépés", command=self.app.destroy)
+
+        self.betolt_alap_adatok()
+        self.frissit_lista()
+
+    def betolt_alap_adatok(self):
+        self.dolgozok_lista = [
+            Dolgozo_KSZ_Osztaly("Nagy János", 45),
+            Dolgozo_KSZ_Osztaly("Kiss Mária", 28),
+            Dolgozo_KSZ_Osztaly("Tóth Béla", 51),
+            Dolgozo_KSZ_Osztaly("Szabó Elemér", 33)
+        ]
+
+    def frissit_lista(self):
+        self.listbox.delete(0, tk.END)
+        for dolgozo in self.dolgozok_lista:
+            self.listbox.insert(tk.END, str(dolgozo))
+
+    def rendez_nev(self):
+        self.dolgozok_lista = rendezes_ksz_fv(self.dolgozok_lista, 'nev')
+        self.frissit_lista()
+
+    def rendez_kor(self):
+        self.dolgozok_lista = rendezes_ksz_fv(self.dolgozok_lista, 'kor')
+        self.frissit_lista()
+
+    def betolt_csv(self):
+        fajlnev = filedialog.askopenfilename(
+            title="CSV fájl megnyitása",
+            filetypes=(("CSV fájlok", "*.csv"), ("Minden fájl", "*.*"))
+        )
+        if not fajlnev:
+            return
+
+        try:
+            uj_lista = []
+            with open(fajlnev, mode='r', encoding='utf-8') as f:
+                csv_olvaso = csv.reader(f, delimiter=';')
+
+                try:
+                    next(csv_olvaso, None)
+                except StopIteration:
+                    pass
+
+                for sor in csv_olvaso:
+                    if len(sor) == 2:
+                        uj_lista.append(Dolgozo_KSZ_Osztaly(sor[0], sor[1]))
+
+            if uj_lista:
+                self.dolgozok_lista = uj_lista
+                self.frissit_lista()
+                self.mentsd_adatbazisba(fajlnev)
+
+        except Exception as e:
+            print(f"Hiba a CSV olvasása közben: {e}")
+
+    def mentsd_adatbazisba(self, eredeti_fajlnev):
+        uj_fajlnev = eredeti_fajlnev.replace(".csv", "_mentes.csv")
+
+        try:
+            with open(uj_fajlnev, mode='w', encoding='utf-8', newline='') as f:
+                csv_iro = csv.writer(f, delimiter=';')
+
+                csv_iro.writerow(["Nev", "Kor"])
+                for dolgozo in self.dolgozok_lista:
+                    csv_iro.writerow([dolgozo.nev, dolgozo.kor])
+        except Exception as e:
+            print(f"Hiba a CSV írása közben: {e}")
+
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = Applikacio(root_ablak=root)
+    root.mainloop()

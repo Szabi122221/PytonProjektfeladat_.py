@@ -8,7 +8,7 @@ from LogikaKSZ import Dolgozo_KSZ_Osztaly, rendezes_ksz_fv
 class Applikacio:
     def __init__(self, root_ablak):
         self.app = root_ablak
-        self.app.title("KSZ Projekt - Adatrendező'")
+        self.app.title("KSZ Projekt - Adatrendező")
         self.app.geometry("450x500")
 
         self.dolgozok_lista = []

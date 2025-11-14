@@ -22,7 +22,6 @@ class Applikacio:
         self.listbox = tk.Listbox(self.frame, height=10)
         self.listbox.pack(fill=tk.X, expand=True, pady=5)
 
-        # Sorting buttons
         self.btn_frame = ttk.Frame(self.frame)
         self.btn_frame.pack(fill=tk.X)
 
@@ -35,7 +34,6 @@ class Applikacio:
         self.btn_torles = ttk.Button(self.btn_frame, text="Törlés", command=self.torles_dolgozo)
         self.btn_torles.pack(side=tk.LEFT, expand=True, fill=tk.X, padx=2)
 
-        # Add employee section
         self.add_frame = ttk.LabelFrame(self.frame, text="Új dolgozó hozzáadása", padding="10")
         self.add_frame.pack(fill=tk.X, pady=10)
 
@@ -54,7 +52,6 @@ class Applikacio:
         self.btn_hozzaad = ttk.Button(self.add_frame, text="Hozzáadás", command=self.hozzaad_dolgozo)
         self.btn_hozzaad.grid(row=2, column=0, columnspan=2, pady=5)
 
-        # Menu
         self.menu = tk.Menu(self.app)
         self.app.config(menu=self.menu)
         self.file_menu = tk.Menu(self.menu, tearoff=0)
@@ -68,7 +65,6 @@ class Applikacio:
         self.betolt_alap_adatok()
         self.frissit_lista()
 
-        # Track the current CSV file for auto-save on delete
         self.current_csv_file = None
 
     def betolt_alap_adatok(self):
@@ -103,7 +99,6 @@ class Applikacio:
         index = selected_index[0]
         torolt_dolgozo = self.dolgozok_lista[index]
 
-        # Confirm deletion
         valasz = (messagebox.askyesno
         (
             "Törlés megerősítése",
@@ -114,7 +109,6 @@ class Applikacio:
             del self.dolgozok_lista[index]
             self.frissit_lista()
 
-            # If data was loaded from CSV, update that file
             if self.current_csv_file:
                 self.auto_save_to_csv()
 
@@ -149,7 +143,6 @@ class Applikacio:
         if not fajlnev:
             return
 
-        # Try multiple encodings common for Hungarian text
         encodings = ['utf-8', 'windows-1252', 'iso-8859-2', 'cp1250']
 
         for encoding in encodings:
@@ -208,7 +201,6 @@ class Applikacio:
             messagebox.showerror("Hiba", f"Hiba a CSV írása közben: {e}")
 
     def auto_save_to_csv(self):
-        """Automatically save to the currently loaded CSV file after deletion"""
         if not self.current_csv_file:
             return
 

@@ -4,7 +4,6 @@ Kelemen Szabolcs
 A program egy Tkinter alapú grafikus felülettel rendelkező alkalmazás, amely a dolgozók (név és kor) adatainak kezelésére szolgál. Lehetővé teszi új dolgozók hozzáadását, a meglévő lista név vagy kor szerinti rendezését, valamint az adatok CSV fájlból történő betöltését és CSV fájlba történő mentését.
 
 
-
 Applikacio
 
 A fő osztály, amely kezeli a felhasználói interakciókat, a widgetek elhelyezését és az adatok kezelését.
@@ -30,9 +29,6 @@ ment_csv(self): Elmenti a dolgozók listáját egy választott CSV fájlba.
 (mentsd_adatbazisba(self, eredeti_fajlnev): (Nem használt, de definiált) Egy belső mentési metódus.)
 
 
-
-
-
 Dolgozo_KSZ_Osztaly
 
 A dolgozói adatokat reprezentáló osztály.
@@ -46,3 +42,12 @@ __str__(self): Megadja a dolgozó objektum string reprezentációját (pl.: "Nag
 rendezes_ksz_fv(dolgozok, kulcs): Egy listányi Dolgozo_KSZ_Osztaly objektumot rendez a megadott kulcs ('nev' vagy 'kor') alapján.
 
 Visszatérési érték: A rendezett dolgozói lista.
+
+
+Modul                           Funkciók                                               Leírás 
+tkinter                         Tk(), Listbox(), Menu()                                Grafikus felület létrehozása.
+tkinter.ttk                     Frame(), Label(), Button(), Entry(), LabelFrame()      Témázott widgetek a modernebb megjelenésért.
+tkinter.filedialog              askopenfilename(), asksaveasfilename()                 Fájl megnyitása és mentése ablakok. 
+tkinter.messagebox              showwarning(), showinfo(), showerror()                 Felhasználói visszajelzések (figyelmeztetés, siker, hiba) megjelenítése.
+csv                             reader(), writer()                                     CSV formátumú adatok olvasása és írása. 
+LogikaKSZ                       Dolgozo_KSZ_Osztaly, rendezes_ksz_fv()                 A dolgozói adatok kezeléséért és a rendezés logikájáért felelős modul.
